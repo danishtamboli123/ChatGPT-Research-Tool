@@ -22,6 +22,7 @@ export class NavComponent implements OnInit{
   UserLogout():void{
     this.http.post("http://localhost:8000/api/logout", {}, {withCredentials:true}).subscribe(() =>
     this.authenticated = false);
+    this.UserService.ResetUser();
   }  
 
 }

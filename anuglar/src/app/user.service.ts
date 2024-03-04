@@ -26,4 +26,10 @@ export class UserService {
       this.AccountType = "researcher"
     }
   }
+
+  ResetUser(){
+    this.AccountType = "";
+    this.IsAuthenticated = false;
+    this.CurrentUser = undefined;
+  }
 }
