@@ -1,17 +1,27 @@
 <main class="form-signin w-100 m-auto">
 <form [formGroup]="Registrationform" (submit)= "submitRegisterForm()">
-    <h1> Chat Gpt Research Tool - Register</h1>
+    <h1> User Registration</h1>
+    <h1 class="h3 mb-3 fw-normal">Please create an account</h1>
 
-    <input formControlName="name" type="name" class="form-control" placeholder="Your Name" required>
-    <input formControlName="email" type="email" class="form-control" placeholder="name@example.com" required>
-    <input formControlName="password" type="password" class="form-control" placeholder="Password" required>
-    <mat-form-field>
-        <mat-label>Account Type</mat-label>
-        <mat-select formControlName="account_type" aria-required="true">
-            <mat-option value="1">Participant</mat-option>
-            <mat-option value="2">Researcher</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <button class="btn btn-primary w-100 py-2" type="submit">Submit Registration</button>
+    <div class="form-floating" style="margin-top: 20px;">
+        <input formControlName="name" type="" class="form-control" placeholder="Your Name" required>
+        <label>Your Name</label>
+    </div>
+    <div class="form-floating" style="margin-top: 20px;">
+        <input formControlName="email" type="email" class="form-control" placeholder="name@example.com" required>
+        <label>Email address</label>
+    </div>
+    <div class="form-floating" style="margin-top: 20px;">
+        <input formControlName="password" type="password" class="form-control" placeholder="Password" required>
+        <label>Your Password</label>
+    </div>
+    <div class="form-floating" style="margin-top: 20px;">
+        <select formControlName="account_type" required class="form-control"> 
+            <option value="1">Participant</option>
+            <option value="2">Researcher</option>
+        </select>
+        <label>Select Account Type</label>
+    </div>
+    <button class="btn btn-primary w-100 py-2" type="submit" style="margin-top: 20px;">Submit Registration</button>
   </form>
 </main>

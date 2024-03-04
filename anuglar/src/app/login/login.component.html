@@ -1,16 +1,16 @@
 <main class="form-signin w-100 m-auto">
 <form [formGroup]="LoginForm" (submit) = "LoginSubmit()">
-    <h1>Chat Gpt Research Tool - Login</h1>
+    <h1>User Login</h1>
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <div class="form-floating">
+    <div class="form-floating" style="margin-top: 20px;">
       <input type="email" formControlName="email" class="form-control" placeholder="name@example.com" required>
       <label for="floatingInput">Email address</label>
     </div>
-    <div class="form-floating">
+    <div class="form-floating" style="margin-top: 20px;">
       <input type="password" formControlName="password" class="form-control" placeholder="Password" required>
       <label for="floatingPassword">Password</label>
     </div>
-    <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+    <button class="btn btn-primary w-100 py-2" type="submit" style="margin-top: 20px;">Sign in</button>
   </form>
   </main>
