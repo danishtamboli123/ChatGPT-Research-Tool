@@ -1,27 +1,38 @@
 <main class="form-signin w-100 m-auto">
 <form [formGroup]="Registrationform" (submit)= "submitRegisterForm()">
-    <h1> User Registration</h1>
-    <h1 class="h3 mb-3 fw-normal">Please create an account</h1>
+    <h1 style="font-size:50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3"> User Registration</h1>
+    <h2 class="h3 mb-3 fw-normal">Please create an account</h2>
 
-    <div class="form-floating" style="margin-top: 20px;">
-        <input formControlName="name" type="" class="form-control" placeholder="Your Name" required>
-        <label>Your Name</label>
+    <div style="margin-top: 20px;">
+        <mat-form-field style="width:330px">
+            <mat-label>Your Name</mat-label>
+            <input matInput formControlName="name" required>
+          </mat-form-field>
     </div>
-    <div class="form-floating" style="margin-top: 20px;">
-        <input formControlName="email" type="email" class="form-control" placeholder="name@example.com" required>
-        <label>Email address</label>
+    <div style="margin-top: 20px;">
+        <mat-form-field style="width:330px">
+            <mat-label>Your Email</mat-label>
+            <input matInput type="email" formControlName="email" email required>
+        </mat-form-field>
     </div>
-    <div class="form-floating" style="margin-top: 20px;">
-        <input formControlName="password" type="password" class="form-control" placeholder="Password" required>
-        <label>Your Password</label>
+    <div style="margin-top: 20px;">
+        <mat-form-field style="width:330px">
+            <mat-label>Enter your password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
     </div>
-    <div class="form-floating" style="margin-top: 20px;">
-        <select formControlName="account_type" required class="form-control"> 
-            <option value="1">Participant</option>
-            <option value="2">Researcher</option>
-        </select>
-        <label>Select Account Type</label>
+    <div style="margin-top: 20px;">
+    <mat-form-field style="width:330px">
+        <mat-label>Account Type</mat-label>
+        <mat-select formControlName="account_type" required>
+          <mat-option value="1">Participant</mat-option>
+          <mat-option value="2">Researcher</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <button class="btn btn-primary w-100 py-2" type="submit" style="margin-top: 20px;">Submit Registration</button>
+    <button class="btn btn-primary w-100 py-2" type="submit" style="margin-top: 20px;width:330px !important;" [disabled]="!Registrationform.valid">Submit Registration</button>
   </form>
 </main>

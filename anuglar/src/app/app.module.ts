@@ -12,6 +12,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FootComponent } from './foot/foot.component';
 import { LogoutComponent } from './logout/logout.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -21,7 +29,9 @@ import { LogoutComponent } from './logout/logout.component';
     HomeComponent,
     NavComponent,
     FootComponent,
-    LogoutComponent
+    LogoutComponent,
+    DashboardComponent,
+    CreateProjectComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,10 +40,16 @@ import { LogoutComponent } from './logout/logout.component';
     MatFormField,
     HttpClientModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [
     provideClientHydration(),
     NavComponent,
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]
 })

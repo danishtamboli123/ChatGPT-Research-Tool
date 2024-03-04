@@ -17,15 +17,6 @@ export class HomeComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-      this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
-        this.UserService.UpdateAuthentication(true);
-        this.UserService.UpdateCurrentUserInfo(res);
-        Emitters.authEmitter.emit(true);
-      },
-      err => {
-        Emitters.authEmitter.emit(false);
-        this.UserService.UpdateAuthentication(true);
-      })
-      
+
   }
 }

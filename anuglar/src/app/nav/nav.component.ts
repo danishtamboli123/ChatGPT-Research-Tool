@@ -17,6 +17,17 @@ export class NavComponent implements OnInit{
       Emitters.authEmitter.subscribe((auth:boolean) => {
         this.authenticated = auth;
       })
+
+      this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
+        this.UserService.UpdateCurrentUserInfo(res);
+        Emitters.authEmitter.emit(true);
+        this.UserService.UpdateAuthentication(true);
+        this.authenticated = true;
+      },
+      err => {
+        Emitters.authEmitter.emit(false);
+        this.UserService.UpdateAuthentication(false);
+      })
   }
 
   UserLogout():void{
