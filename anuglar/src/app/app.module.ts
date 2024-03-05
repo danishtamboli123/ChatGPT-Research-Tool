@@ -47,6 +47,7 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatIconModule,
     MatButtonModule,
     MatStepperModule,
+    FormsModule,
   ],
   providers: [
     provideClientHydration(),
