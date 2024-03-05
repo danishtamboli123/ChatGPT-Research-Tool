@@ -2,7 +2,8 @@
     <h2 style="font-size:35px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3" *ngIf="UserService.IsAuthenticated">Hey {{UserService.CurrentUser.name}},</h2>
     <h1 style="font-size:50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Ready to start a New Study? <br> Or Modify One?</h1>
     <p></p>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start" style="margin-top: 35px;">
         <button type="button" routerLink="/create-project" class="btn btn-primary btn-lg px-4 me-md-2">Create Study</button>
     </div>
+    <h2 style="font-size:35px; margin-top: 50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Your existing studies:</h2>
 </div>
