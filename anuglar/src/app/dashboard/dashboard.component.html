@@ -1,9 +1,81 @@
 <div class="container col-xxl-8 px-4 py-5">
-    <h2 style="font-size:35px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3" *ngIf="UserService.IsAuthenticated">Hey {{UserService.CurrentUser.name}},</h2>
-    <h1 style="font-size:50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Ready to start a New Study? <br> Or Modify One?</h1>
+    <h2 style="font-size:35px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3"
+        *ngIf="UserService.IsAuthenticated">Hey {{UserService.CurrentUser.name}},</h2>
+    <h1 style="font-size:50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Ready to start a New Study? <br>
+        Or Modify One?</h1>
     <p></p>
     <div class="d-grid gap-2 d-md-flex justify-content-md-start" style="margin-top: 35px;">
-        <button type="button" routerLink="/create-project" class="btn btn-primary btn-lg px-4 me-md-2">Create Study</button>
+        <button type="button" routerLink="/create-project" class="btn btn-primary btn-lg px-4 me-md-2">Create
+            Study</button>
     </div>
-    <h2 style="font-size:35px; margin-top: 50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Your existing studies:</h2>
+    <div *ngIf="myStudies">
+        <div class="album py-5">
+            <div class="container">
+                <h2 style="font-size:35px; margin-top: 50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+                    Your Ongoing Studies...</h2>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Search Studies</mat-label>
+                        <input matInput placeholder="Ex. How does one go about?" [(ngModel)]='searchFilterVar'>
+                    </mat-form-field>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <ng-container *ngFor=" let study of myStudies">
+                        <div class="col" *ngIf="CheckSubString(study.study_name,searchFilterVar)">
+                            <div class="card shadow-sm">
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                    preserveAspectRatio="xMidYMid slice" focusable="false">
+                                    <title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%"
+                                        fill="#eceeef" dy=".3em">{{study.study_name}}</text>
+                                </svg>
+                                <div class="card-body">
+                                    <p class="card-text"
+                                        *ngIf="study.pre_study_questionnaire!='null';else other_pre_study_content">
+                                        <strong>Pre Study Questionnaire ✅</strong>
+                                    </p>
+                                    <p class="card-text" *ngIf="study.irb_pdf!='null';else other_irb_content"><strong>
+                                            IRB
+                                            PDF ✅</strong> </p>
+                                    <p class="card-text"
+                                        *ngIf="study.questions_list!='null';else other_questions_list_content">
+                                        <strong>Number of Questions:</strong> {{getObjectLen(study.questions_list)}}
+                                    </p>
+                                    <p class="card-text"
+                                        *ngIf="study.post_study_questionnaire!='null';else other_post_study_content">
+                                        <strong>Post Study Questionnaire ✅</strong>
+                                    </p>
+
+                                    <ng-template #other_pre_study_content>
+                                        <p class="card-text"><strong>Pre Study Questionnaire ❌</strong></p>
+                                    </ng-template>
+                                    <ng-template #other_irb_content>
+                                        <p class="card-text"><strong>IRB PDF ❌</strong></p>
+                                    </ng-template>
+                                    <ng-template #other_questions_list_content>
+                                        <p class="card-text"><strong>Number of Questions: ❌</strong></p>
+                                    </ng-template>
+                                    <ng-template #other_post_study_content>
+                                        <p class="card-text"><strong>Post Study Questionnaire ❌</strong></p>
+                                    </ng-template>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-secondary">Delete</button>
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-secondary">Download</button>
+                                        </div>
+                                        <small class="text-body-secondary">9 mins</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

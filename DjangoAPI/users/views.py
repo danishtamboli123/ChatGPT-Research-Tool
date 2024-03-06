@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
-from .models import User
+from .models import User, Study
 import jwt, datetime
+import json
+from rest_framework.exceptions import ValidationError, ParseError
 
 # Create your views here.
 
@@ -67,3 +69,30 @@ class LogoutView(APIView):
         response.data = {'message' : 'success'}
 
         return response
+    
+class CreateStudyView(APIView):
+    def post(self,request):
+        # print(request.data)
+        StudyData = request.data
+        StudyData["questions_list"] = json.loads(StudyData["questions_list"])
+        if(Study.objects.filter(study_name = StudyData["study_name"], user_id = StudyData["user_id"]).count() == 0):
+            temp_study = Study(questions_list = StudyData["questions_list"],
+                    study_name = StudyData["study_name"],
+                    user_id = StudyData["user_id"],
+                    irb_pdf = StudyData["irb_pdf"],
+                    pre_study_questionnaire = StudyData["pre_study_questionnaire"],
+                    post_study_questionnaire = StudyData["post_study_questionnaire"],
+                    )
+            temp_study.save()
+        else:
+            raise ValidationError
+        
+        response = Response()
+        response.data = {'message' : 'success'}
+
+        return response
+    
+class ShowResearcherStudies(APIView):
+    def get(self,request):
+        ResearcherStudies = Study.objects.filter(user_id = request.GET.get('q',''))
+        return Response(ResearcherStudies.all().values())

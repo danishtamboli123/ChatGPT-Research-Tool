@@ -18,22 +18,13 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 
 export class CreateProjectComponent implements OnInit {
-  url_checker = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-  CreateProjectQuestions:String[] = []
-  CreateProjectForm = new FormGroup({
-    study_name: new FormControl(null, [Validators.required]),
-    user_id: new FormControl(null, [Validators.required]),
-    irb_pdf: new FormControl(),
-    pre_study_questionnaire: new FormControl(null,Validators.pattern(this.url_checker)),
-    questions_list: new FormControl(this.CreateProjectQuestions,[Validators.required]),
-    post_study_questionnaire: new FormControl(null,Validators.pattern(this.url_checker)),
-  });
-  
+
 
   isLinear = true;
   fileName = '';
   fileURL?:SafeUrl;
   file?:File;
+  formData = new FormData();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,14 +33,26 @@ export class CreateProjectComponent implements OnInit {
     private UserService: UserService,
     private sanitizer: DomSanitizer) {}
 
+
+  url_checker = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+  studyname_checker = '^[0-9a-zA-Z_\\-. ]+$';
+
+  CreateProjectQuestions:String[] = []
+  CreateProjectForm = new FormGroup({
+    study_name: new FormControl(null, [Validators.required,Validators.pattern(this.studyname_checker)]),
+    user_id: new FormControl(null, [Validators.required]),
+    irb_pdf: new FormControl(),
+    pre_study_questionnaire: new FormControl(null,Validators.pattern(this.url_checker)),
+    questions_list: new FormControl(this.CreateProjectQuestions,[Validators.required]),
+    post_study_questionnaire: new FormControl(null,Validators.pattern(this.url_checker)),
+  });
+
   ngOnInit(): void {
-    
   }
 
   AddQuestion():void{
     this.CreateProjectQuestions.push("");
     this.CreateProjectForm.patchValue({questions_list:this.CreateProjectQuestions});
-    console.log(this.CreateProjectForm.controls.questions_list.value) 
    }
 
   ResetFormData():void{
@@ -74,7 +77,7 @@ export class CreateProjectComponent implements OnInit {
 
      if (this.file) {
 
-         this.fileName = this.CreateProjectForm.controls.study_name.value + "_" + this.file.name;
+         this.fileName = this.file.name;
          this.fileURL= this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(event.target.files[0]));
   
 
@@ -85,4 +88,30 @@ export class CreateProjectComponent implements OnInit {
         //  upload$.subscribe();
      }
  }
+
+ CreateStudy(){
+  this.formData = new FormData();
+  this.CreateProjectForm.patchValue({user_id : this.UserService.CurrentUser.id});
+  const temp_var:any = this.CreateProjectForm.getRawValue();
+  for (var field in temp_var) { // 'field' is a string
+    if(field != "questions_list"){
+      this.formData.append(field,temp_var[field as keyof any]);
+    }
+  }
+
+  var temp:any = {}
+
+  temp_var["questions_list"].forEach((element:any, index:any) => {
+    temp["Question " + (index+1)] = element;
+  });
+
+  this.formData.append("questions_list", JSON.stringify(temp));
+
+
+  this.http.post("http://localhost:8000/api/createStudy", this.formData, {withCredentials:true})
+  .subscribe(() => {
+    this.router.navigate(['/dashboard']);
+  })
+ }
+ 
 }

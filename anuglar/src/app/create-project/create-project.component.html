@@ -1,6 +1,6 @@
 <div class="container col-xxl-8 px-4 py-5">
     <h2>Enter Study Details</h2>
-    <form [formGroup]="CreateProjectForm">
+    <form [formGroup]="CreateProjectForm" enctype="multipart/form-data">
     <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
         <mat-step [stepControl]="CreateProjectForm.controls.study_name">
             <ng-template matStepLabel>Enter Study Name</ng-template>
@@ -14,7 +14,7 @@
         </mat-step>
         <mat-step [stepControl]="CreateProjectForm.controls.irb_pdf">
             <ng-template matStepLabel>Upload IRB</ng-template>
-            <input type="file" class="file-input" (change)="onFileSelected($event)" placeholder="Ex. IRB_Study_2024.pdf" required #fileUpload>
+            <input type="file" class="file-input" (change)="onFileSelected($event)" placeholder="Ex. IRB_Study_2024.pdf" accept="application/pdf," required #fileUpload>
              <div class="file-upload" style="margin-bottom: 15px;">
              
                 {{fileName || "No file uploaded yet."}}
@@ -53,9 +53,9 @@
             <h2 style="margin-top: 15px;margin-bottom: 0px;">Add Questions</h2>
             <div *ngIf="CreateProjectForm.controls.questions_list.value!=[]">
                 <div *ngFor="let question of CreateProjectQuestions; index as i;trackBy: trackByMethod" style="margin-top: 15px;">
-                    <h2>Question {{i}}:</h2>
+                    <h2>Question {{i+1}}:</h2>
                     <mat-form-field style="width: 500px !important;">
-                        <mat-label>Question {{i}}</mat-label>
+                        <mat-label>Question {{i+1}}</mat-label>
                         <input matInput placeholder="Ex. How children interact with ChatGpt?" [(ngModel)]='CreateProjectQuestions[i]' [ngModelOptions]="{standalone: true}" required>
                     </mat-form-field>
                     <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="RemoveQuestion(i)" style="margin-left: 15px;">
@@ -89,7 +89,7 @@
         <div>
             <button mat-button matStepperPrevious style="margin-right: 15px;">Back</button>
             <button mat-button (click)="stepper.reset();ResetFormData();" style="margin-right: 15px;">Reset</button>
-            <button class="btn btn-primary" style="margin-right: 15px;">Create Study</button>
+            <button class="btn btn-primary" style="margin-right: 15px;" (click)="CreateStudy();">Create Study</button>
         </div>
         </mat-step>
     </mat-stepper>
