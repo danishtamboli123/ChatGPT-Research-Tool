@@ -1,3 +1,5 @@
+import os
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -96,3 +98,55 @@ class ShowResearcherStudies(APIView):
     def get(self,request):
         ResearcherStudies = Study.objects.filter(user_id = request.GET.get('q',''))
         return Response(ResearcherStudies.all().values())
+
+class EditStudyView(APIView):
+    def get(self,request):
+        studyNumber = request.GET.get('q', '')
+        StudyData = Study.objects.filter(study_id = studyNumber).all()
+        return Response(StudyData.all().values())
+    
+    def post(self,request):
+
+        try:
+            StudyData = Study.objects.filter(study_id = request.data['study_id']).all().first()
+            StudyData.study_name = request.data['study_name']
+            StudyData.pre_study_questionnaire = request.data['pre_study_questionnaire']
+            StudyData.post_study_questionnaire = request.data['post_study_questionnaire']
+            if(os.path.exists(StudyData.irb_pdf.path)):
+                os.remove(StudyData.irb_pdf.path)
+            StudyData.irb_pdf = request.data['irb_pdf']
+            StudyData.questions_list = json.loads(request.data["questions_list"])
+            StudyData.save()
+        except:
+            return Response({"err": "error"})
+        
+        response = Response()
+        response.data = {'message' : 'success'}
+
+        return response
+    
+class GetIRBFileView(APIView):
+    def get(self,request):
+        file_location = request.GET.get('q', '')
+
+        try:    
+
+            return FileResponse(open(file_location,'rb'),
+                                    content_type='application/pdf',
+                                    )
+
+        except:
+            # handle file not exist case here
+            return Response({"err": "Failed"})
+        
+class DeleteStudy(APIView):
+    def post(self, request):
+        try:
+            StudyData = Study.objects.filter(study_id = request.data['study_id']).all().first()
+            if(os.path.exists(StudyData.irb_pdf.path)):
+                os.remove(StudyData.irb_pdf.path)
+            StudyData.delete()
+        except:
+            return Response({"err": "error"})
+        
+        return Response({"message": "success"})

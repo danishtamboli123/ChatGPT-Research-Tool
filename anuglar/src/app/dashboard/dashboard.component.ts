@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { Emitters } from '../emitters/emitters';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { state } from '@angular/animations';
+import { DeleteStudyDialogComponent } from '../delete-study-dialog/delete-study-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +21,10 @@ export class DashboardComponent implements OnInit{
   searchFilterVar:string = "";
 
   constructor(public UserService: UserService,
-    public http: HttpClient){
+    public http: HttpClient,
+    private router: Router,
+    public dialog: MatDialog,
+    ){
 
   }
 
@@ -38,7 +46,6 @@ export class DashboardComponent implements OnInit{
   FectchUserProjects(){
     this.http.get(`http://localhost:8000/api/allStudies/?q=${this.UserService.CurrentUser.id}`).subscribe((res:any) => {
       this.myStudies = res;
-      console.log(this.myStudies[0]["questions_list"])
     },
     err => {
     })
@@ -54,5 +61,21 @@ export class DashboardComponent implements OnInit{
       return true;
     }
     else return false;
+  }
+
+  EditStudy(studyID: number){
+    console.log(studyID);
+    this.router.navigate(['edit-study'], { state: {study_id: studyID} });
+  }
+
+  openDeleteDialog(study: any): void {
+    const dialogRef = this.dialog.open(DeleteStudyDialogComponent, {
+      width: 'auto',
+      data: { study: study }
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      console.log('The dialog was closed');
+    });
   }
 }

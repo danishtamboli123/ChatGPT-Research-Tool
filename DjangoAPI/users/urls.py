@@ -1,6 +1,6 @@
 
 from django.urls import include, path
-from .views import RegisterView, LoginView, UserView, LogoutView, CreateStudyView, ShowResearcherStudies
+from .views import RegisterView, LoginView, UserView, LogoutView, CreateStudyView, ShowResearcherStudies, EditStudyView, GetIRBFileView, DeleteStudy
 
 urlpatterns = [
     path('register', RegisterView.as_view()),
@@ -8,5 +8,8 @@ urlpatterns = [
     path('user', UserView.as_view()),
     path('logout', LogoutView.as_view()),
     path('createStudy', CreateStudyView.as_view()),
-    path('allStudies/', ShowResearcherStudies.as_view())
+    path('allStudies/', ShowResearcherStudies.as_view()),
+    path('editStudy/', EditStudyView.as_view()),
+    path('getIRBFile/', GetIRBFileView.as_view()),
+    path('deleteStudy/', DeleteStudy.as_view()),
 ]

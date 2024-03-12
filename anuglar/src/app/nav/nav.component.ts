@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Emitters } from '../emitters/emitters';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +13,8 @@ export class NavComponent implements OnInit{
   public authenticated!:boolean;
   
   constructor(private http: HttpClient,
-    public UserService: UserService){}
+    public UserService: UserService,
+    private router: Router,){}
   ngOnInit(): void {
       Emitters.authEmitter.subscribe((auth:boolean) => {
         this.authenticated = auth;

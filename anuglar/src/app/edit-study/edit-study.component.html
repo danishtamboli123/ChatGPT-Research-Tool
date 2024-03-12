@@ -1,0 +1,97 @@
+<div class="container col-xxl-8 px-4 py-5">
+    <h2>Enter Study Details</h2>
+    <form [formGroup]="UpdateProjectForm" enctype="multipart/form-data">
+    <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="UpdateProjectForm.controls.study_name">
+            <ng-template matStepLabel>Enter Study Name</ng-template>
+            <mat-form-field style="margin-top: 15px;width: 500px !important;">
+            <mat-label>Study Name</mat-label>
+            <input matInput placeholder="Ex. How children interact with ChatGpt" formControlName="study_name" required>
+            </mat-form-field>
+            <div>
+            <button mat-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="UpdateProjectForm.controls.irb_pdf">
+            <ng-template matStepLabel>Upload IRB</ng-template>
+            <input type="file" class="file-input" (change)="onFileSelected($event)" placeholder="Ex. IRB_Study_2024.pdf" accept="application/pdf," required #fileUpload>
+             <div class="file-upload" style="margin-bottom: 15px;">
+             
+                {{fileName || "No file uploaded yet."}}
+             
+                 <button mat-mini-fab color="primary"
+                   (click)="fileUpload.click()" style="margin-left: 15px;">
+                     <mat-icon>attach_file</mat-icon>
+                 </button>
+             </div>
+             <mat-form-field style="margin-top: 15px;width: 500px !important;" [hidden]="true">
+                <input matInput formControlName="irb_pdf" required>
+            </mat-form-field>
+            <div *ngIf="fileName">
+                <object width="400" height="500" type="application/pdf" [data]="fileURL">
+                    <p>Insert your error message here, if the PDF cannot be displayed.</p>
+                </object>
+            </div>
+            <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="UpdateProjectForm.controls.pre_study_questionnaire">
+            <ng-template matStepLabel>Pre Study Questionnaire</ng-template>
+            <mat-form-field style="margin-top: 15px;width: 500px !important;">
+            <mat-label>Qualtrics Questionnaire Embed Link</mat-label>
+            <input matInput formControlName="pre_study_questionnaire" placeholder="Ex. http://https://achasurveying.co1.qualtrics.com/jfe/form/SV_1SIY">
+            </mat-form-field>
+            <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="UpdateProjectForm.controls.questions_list">
+            <ng-template matStepLabel>Participant questions for the study</ng-template>
+            <h2 style="margin-top: 15px;margin-bottom: 0px;">Add Questions</h2>
+            <div *ngIf="UpdateProjectForm.controls.questions_list.value!=[]">
+                <div *ngFor="let question of UpdateProjectQuestions; index as i;trackBy: trackByMethod" style="margin-top: 15px;">
+                    <h2>Question {{i+1}}:</h2>
+                    <mat-form-field style="width: 500px !important;">
+                        <mat-label>Question {{i+1}}</mat-label>
+                        <input matInput placeholder="Ex. How children interact with ChatGpt?" [(ngModel)]='UpdateProjectQuestions[i]' [ngModelOptions]="{standalone: true}" required>
+                    </mat-form-field>
+                    <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="RemoveQuestion(i)" style="margin-left: 15px;">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <br>
+            <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="AddQuestion()">
+                <mat-icon>add</mat-icon>
+            </button>
+            <div style="margin-top: 15px;">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="UpdateProjectForm.controls.post_study_questionnaire">
+            <ng-template matStepLabel>Post Study Questionnaire</ng-template>
+            <mat-form-field style="margin-top: 15px;width: 500px !important;">
+            <mat-label>Qualtrics Questionnaire Embed Link</mat-label>
+            <input matInput formControlName="post_study_questionnaire" placeholder="Ex. http://https://achasurveying.co1.qualtrics.com/jfe/form/SV_1SIY">
+            </mat-form-field>
+            <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+        <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+            <button mat-button matStepperPrevious style="margin-right: 15px;">Back</button>
+            <button mat-button (click)="stepper.reset();ResetFormData();" style="margin-right: 15px;">Reset</button>
+            <button class="btn btn-primary" style="margin-right: 15px;" (click)="UpdateStudy();">Update Study</button>
+        </div>
+        </mat-step>
+    </mat-stepper>
+    </form>
+</div>

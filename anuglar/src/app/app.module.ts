@@ -21,6 +21,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatStepperModule} from '@angular/material/stepper';
+import { EditStudyComponent } from './edit-study/edit-study.component';
+import { DeleteStudyDialogComponent } from './delete-study-dialog/delete-study-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     LogoutComponent,
     DashboardComponent,
     CreateProjectComponent,
+    EditStudyComponent,
+    DeleteStudyDialogComponent,
   ],
   imports: [
     BrowserModule,

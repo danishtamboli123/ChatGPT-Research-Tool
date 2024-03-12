@@ -62,13 +62,11 @@
 
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                            <button type="button"
-                                                class="btn btn-sm btn-outline-secondary">Delete</button>
-                                            <button type="button"
-                                                class="btn btn-sm btn-outline-secondary">Download</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)= "EditStudy(study.study_id)">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openDeleteDialog(study)">Delete</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Download</button>
                                         </div>
-                                        <small class="text-body-secondary"> Last Edited on:</small>
+                                        <!-- <small class="text-body-secondary"> Last Edited on:</small> -->
                                     </div>
                                 </div>
                             </div>
