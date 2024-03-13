@@ -2,6 +2,8 @@
 <form [formGroup]="Registrationform" (submit)= "submitRegisterForm()">
     <h1 style="font-size:50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3"> User Registration</h1>
     <h2 class="h3 mb-3 fw-normal">Please create an account</h2>
+    <h3 *ngIf="errorMessage == ''||undefined||null ? false: true" style="color: red;">{{errorMessage}}</h3>
+
 
     <div style="margin-top: 20px;">
         <mat-form-field style="width:330px">

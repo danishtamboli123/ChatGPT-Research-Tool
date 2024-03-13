@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit{
   LoginForm!: FormGroup;
   hide = true;
 
+  errorMessage!:string;
+
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
@@ -33,8 +35,9 @@ export class LoginComponent implements OnInit{
 
   LoginSubmit(){
     this.http.post("http://localhost:8000/api/login", this.LoginForm.getRawValue(), {withCredentials:true})
-    .subscribe(() => {
-      this.router.navigate(['/']);
+    .subscribe((res:any) => {
+      this.errorMessage = ""
+
       this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
         this.UserService.UpdateCurrentUserInfo(res);
         Emitters.authEmitter.emit(true);
@@ -44,6 +47,11 @@ export class LoginComponent implements OnInit{
         Emitters.authEmitter.emit(false);
         this.UserService.UpdateAuthentication(false);
       })
+
+      this.router.navigate(['/']);
+    },
+    err => {
+      this.errorMessage = err.error.detail
     })
     }
 }

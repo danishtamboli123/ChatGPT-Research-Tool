@@ -64,7 +64,6 @@ export class DashboardComponent implements OnInit{
   }
 
   EditStudy(studyID: number){
-    console.log(studyID);
     this.router.navigate(['edit-study'], { state: {study_id: studyID} });
   }
 
@@ -75,7 +74,6 @@ export class DashboardComponent implements OnInit{
     });
 
     dialogRef.afterClosed().subscribe((result:any) => {
-      console.log('The dialog was closed');
     });
   }
 }

@@ -15,6 +15,8 @@ export class RegisterComponent implements OnInit {
   Registrationform!: FormGroup;
   API_URL!: "http://localhost:8000/api";
   hide = true;
+  errorMessage!: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
@@ -33,7 +35,11 @@ export class RegisterComponent implements OnInit {
 
   submitRegisterForm(): void {
     this.http.post("http://localhost:8000/api/register",this.Registrationform?.getRawValue()).subscribe(() =>{
+      this.errorMessage = ""
       this.router.navigate(['/login']);
+    },
+    err => {
+      this.errorMessage = err.error.email;
     });
   }
 }

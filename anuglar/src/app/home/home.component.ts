@@ -10,6 +10,8 @@ import { UserService } from '../user.service';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit{
+  studyID?: number;
+
   constructor(
     private http: HttpClient,
     private navcomp: NavComponent,
@@ -17,6 +19,10 @@ export class HomeComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    
+
+  }
+
+  GoToStudy(studyID:number|undefined){
+    console.log(studyID)
   }
 }

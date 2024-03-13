@@ -23,6 +23,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatStepperModule} from '@angular/material/stepper';
 import { EditStudyComponent } from './edit-study/edit-study.component';
 import { DeleteStudyDialogComponent } from './delete-study-dialog/delete-study-dialog.component';
+import { StudyComponent } from './study/study.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DeleteStudyDialogComponent } from './delete-study-dialog/delete-study-d
     CreateProjectComponent,
     EditStudyComponent,
     DeleteStudyDialogComponent,
+    StudyComponent,
   ],
   imports: [
     BrowserModule,

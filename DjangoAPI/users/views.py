@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
-from .models import User, Study
+from .models import User, Study, StudyData
 import jwt, datetime
 import json
 from rest_framework.exceptions import ValidationError, ParseError
@@ -150,3 +150,13 @@ class DeleteStudy(APIView):
             return Response({"err": "error"})
         
         return Response({"message": "success"})
+    
+class UserStudyData(APIView):
+    def get(self,request):
+        UserData = request.data
+        UserStudyData = StudyData.objects.filter(study_id = UserData['study_id'] , user_id = UserData['user_id']).all()
+        if(UserStudyData.count() > 0):
+            if(UserStudyData.first().study_completed == True):
+                return Response({'err': 'participant has already completed study'})
+            else:
+                return Response({'study_exists':True})

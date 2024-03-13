@@ -25,3 +25,12 @@ class Study(models.Model):
     pre_study_questionnaire = models.CharField(max_length = 255)
     questions_list = models.JSONField()
     post_study_questionnaire = models.CharField(max_length = 255)
+
+class StudyData(models.Model):
+    study_id =  models.BigAutoField(auto_created=True, primary_key=True)
+    user_id = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES,default = False)
+    irb_pdf_signature = models.CharField(max_length = 255)
+    pre_study_questionnaire_filled = models.BooleanField()
+    questions_answers_list = models.JSONField()
+    post_study_questionnaire_filled = models.BooleanField()
+    study_completed = models.BooleanField()
