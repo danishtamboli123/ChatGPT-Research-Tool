@@ -153,10 +153,19 @@ class DeleteStudy(APIView):
     
 class UserStudyData(APIView):
     def get(self,request):
-        UserData = request.data
-        UserStudyData = StudyData.objects.filter(study_id = UserData['study_id'] , user_id = UserData['user_id']).all()
-        if(UserStudyData.count() > 0):
-            if(UserStudyData.first().study_completed == True):
-                return Response({'err': 'participant has already completed study'})
+        UserData = request
+        StudyExists = Study.objects.filter(study_id = UserData.GET['study_id']).count() > 0
+        if(StudyExists):
+            UserStudyData = StudyData.objects.filter(study_id = UserData.GET['study_id'] , user_id = UserData.GET['user_id']).all()
+            if(UserStudyData.count() > 0):
+                if(UserStudyData.first().study_completed == True):
+                    return Response({'err': 'participant has already completed study'})
+                else:
+                    return Response({'study_exists':True,'study_data': UserStudyData.values()})
             else:
-                return Response({'study_exists':True})
+                currStudy = StudyData(study_id = UserData.GET['study_id'] , user_id = UserData.GET['user_id'])
+                currStudy.save()
+                UserStudyData = StudyData.objects.filter(study_id = UserData.GET['study_id'] , user_id = UserData.GET['user_id']).all()
+                return Response({'study_exists':True,'study_data': UserStudyData.values()})
+        else:
+            return Response({'err': 'Invalid Study ID'})

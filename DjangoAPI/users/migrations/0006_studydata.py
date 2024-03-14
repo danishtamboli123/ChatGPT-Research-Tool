@@ -13,7 +13,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='StudyData',
             fields=[
-                ('study_id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ('response_id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False) ),
+                ('study_id', models.PositiveSmallIntegerField(default=False)),
                 ('user_id', models.PositiveSmallIntegerField(choices=[(1, 'participant'), (2, 'researcher')], default=False)),
                 ('irb_pdf_signature', models.CharField(max_length=255)),
                 ('pre_study_questionnaire_filled', models.BooleanField()),
