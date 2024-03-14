@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit{
   studyID!: number;
+  errorMessage!: string;
 
   constructor(
     private http: HttpClient,
@@ -22,15 +23,24 @@ export class HomeComponent implements OnInit{
 
   ngOnInit(): void {
 
+    this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
+      this.UserService.UpdateCurrentUserInfo(res);
+      Emitters.authEmitter.emit(true);
+      this.UserService.UpdateAuthentication(true);
+    },
+    err => {
+      Emitters.authEmitter.emit(false);
+      this.UserService.UpdateAuthentication(false);
+    })
+
   }
 
   GoToStudy(studyID:number){
     this.http.get(`http://localhost:8000/api/study/?study_id=${studyID}&user_id=${this.UserService.CurrentUser.id}`).subscribe((res:any) => {
-      console.log(res)
-      // this.router.navigate(['study'], { state: {study_id: studyID} });
+      this.router.navigate(['study'], { state: {study_data: res.study_data} });
     },
-    err => {
-      console.log(err)
+    (err:any) => {
+      this.errorMessage = err.error.detail;
     })
   }
 }

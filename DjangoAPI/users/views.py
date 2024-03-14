@@ -3,7 +3,7 @@ from django.http import FileResponse, HttpResponse
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, NotFound
 from .serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
 from .models import User, Study, StudyData
@@ -168,4 +168,4 @@ class UserStudyData(APIView):
                 UserStudyData = StudyData.objects.filter(study_id = UserData.GET['study_id'] , user_id = UserData.GET['user_id']).all()
                 return Response({'study_exists':True,'study_data': UserStudyData.values()})
         else:
-            return Response({'err': 'Invalid Study ID'})
+            raise NotFound('Invalid Study ID')

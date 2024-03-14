@@ -18,6 +18,7 @@
                 research, shaping the future of natural language processing.</p>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                 <div *ngIf="UserService.AccountType=='participant'">
+                    <h3 *ngIf="errorMessage == ''||undefined||null ? false: true" style="color: red;">{{errorMessage}}</h3>
                     <div style="margin-top: 20px;">
                         <mat-form-field style="width:330px">
                             <mat-label>Enter Study ID</mat-label>
