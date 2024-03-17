@@ -1,3 +1,4 @@
+import csv
 import os
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import render
@@ -204,3 +205,20 @@ class GPTResponse(APIView):
         )
         answer = response.choices[0].message.content
         return Response({'answer':answer})
+
+def DownloadStudyDataCSV(request):
+    queryset = StudyData.objects.filter(study_id = request.GET['study_id']).all()
+    opts = queryset.model._meta
+    model = queryset.model
+    response = HttpResponse(content_type='text/csv')
+    # force download.
+    response['Content-Disposition'] = 'attachment;filename=Study_Data.csv'
+    # the csv writer
+    writer = csv.writer(response)
+    field_names = [field.name for field in opts.fields]
+    # Write a first row with header information
+    writer.writerow(field_names)
+    # Write data rows
+    for obj in queryset:
+        writer.writerow([getattr(obj, field) for field in field_names])
+    return response

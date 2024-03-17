@@ -76,4 +76,17 @@ export class DashboardComponent implements OnInit{
     dialogRef.afterClosed().subscribe((result:any) => {
     });
   }
+
+  DownloadExcelFile(studyID:number){
+    this.http.get(`http://localhost:8000/api/download-studydata-csv/?study_id=${studyID}`, { responseType: 'blob' })
+    .subscribe(blob => {
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `Study_${studyID}_Data.csv`;
+      link.click();
+    },
+    (err:any) => {
+
+    })
+  }
 }
