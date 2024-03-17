@@ -1,6 +1,6 @@
 
 from django.urls import include, path
-from .views import RegisterView, LoginView, UserView, LogoutView, CreateStudyView, ShowResearcherStudies, EditStudyView, GetIRBFileView, DeleteStudy, UserStudyData
+from .views import RegisterView, LoginView, UserView, LogoutView, CreateStudyView, ShowResearcherStudies, EditStudyView, GetIRBFileView, DeleteStudy, UserStudyData, GPTResponse
 
 urlpatterns = [
     path('register', RegisterView.as_view()),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('getIRBFile/', GetIRBFileView.as_view()),
     path('deleteStudy/', DeleteStudy.as_view()),
     path('study/', UserStudyData.as_view()),
+    path('chatgpt-response/',GPTResponse.as_view()),
 ]

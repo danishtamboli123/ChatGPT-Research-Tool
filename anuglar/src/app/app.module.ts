@@ -24,6 +24,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { EditStudyComponent } from './edit-study/edit-study.component';
 import { DeleteStudyDialogComponent } from './delete-study-dialog/delete-study-dialog.component';
 import { StudyComponent } from './study/study.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { StudyComponent } from './study/study.component';
     MatButtonModule,
     MatStepperModule,
     FormsModule,
+    MatCheckboxModule,
   ],
   providers: [
     provideClientHydration(),

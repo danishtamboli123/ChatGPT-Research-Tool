@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit{
 
   constructor(
     private http: HttpClient,
-    private navcomp: NavComponent,
     public UserService: UserService,
     public router: Router,
   ){}
@@ -37,7 +36,7 @@ export class HomeComponent implements OnInit{
 
   GoToStudy(studyID:number){
     this.http.get(`http://localhost:8000/api/study/?study_id=${studyID}&user_id=${this.UserService.CurrentUser.id}`).subscribe((res:any) => {
-      this.router.navigate(['study'], { state: {study_data: res.study_data} });
+      this.router.navigate(['study'], { state: {study_id: studyID} });
     },
     (err:any) => {
       this.errorMessage = err.error.detail;

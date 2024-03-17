@@ -10,6 +10,7 @@ from .models import User, Study, StudyData
 import jwt, datetime
 import json
 from rest_framework.exceptions import ValidationError, ParseError
+from openai import OpenAI
 
 # Create your views here.
 
@@ -159,7 +160,7 @@ class UserStudyData(APIView):
             UserStudyData = StudyData.objects.filter(study_id = UserData.GET['study_id'] , user_id = UserData.GET['user_id']).all()
             if(UserStudyData.count() > 0):
                 if(UserStudyData.first().study_completed == True):
-                    return Response({'err': 'participant has already completed study'})
+                    raise NotFound('You have already completed this study')
                 else:
                     return Response({'study_exists':True,'study_data': UserStudyData.values()})
             else:
@@ -169,3 +170,37 @@ class UserStudyData(APIView):
                 return Response({'study_exists':True,'study_data': UserStudyData.values()})
         else:
             raise NotFound('Invalid Study ID')
+        
+    def post(self,request):
+        UserData = request.data
+        try:
+            Record = StudyData.objects.filter( study_id = UserData['study_id'], user_id = UserData['user_id']).all().first()
+            for var in UserData:
+                if var in ['pre_study_questionnaire_filled','post_study_questionnaire_filled']:
+                    if UserData[var] == 'true':
+                       setattr(Record, var, True)
+                    else:
+                        setattr(Record, var, False)
+                else:
+                    setattr(Record, var, UserData[var])
+            Record.questions_answers_list = json.loads(UserData['questions_answers_list'])
+            Record.study_completed = True
+            Record.save()
+            return Response({'message': 'successfully updated Participant Study Data'})
+        except Exception as error:
+            print(error)
+            raise ValidationError
+
+        
+class GPTResponse(APIView):
+    def get(self,request):
+        client = OpenAI(api_key = "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")
+
+        response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": request.GET['prompt']}
+        ]
+        )
+        answer = response.choices[0].message.content
+        return Response({'answer':answer})
