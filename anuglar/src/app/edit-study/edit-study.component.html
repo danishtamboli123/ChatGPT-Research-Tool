@@ -1,4 +1,4 @@
-<div class="container col-xxl-8 px-4 py-5">
+<div class="container col-xxl-8 px-4 py-5" *ngIf="UserService">
     <h2>Enter Study Details</h2>
     <form [formGroup]="UpdateProjectForm" enctype="multipart/form-data">
     <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>

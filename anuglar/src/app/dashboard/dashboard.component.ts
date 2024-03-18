@@ -29,17 +29,25 @@ export class DashboardComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+    this.UserService.getCurrentUserService().then((authServiceInstance:UserService) => {
+      console.log(authServiceInstance)
+      if (authServiceInstance) {
+        this.UserService = authServiceInstance;
+        this.FectchUserProjects();
+      }
+    });
     
-    this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
-      this.UserService.UpdateCurrentUserInfo(res);
-      Emitters.authEmitter.emit(true);
-      this.UserService.UpdateAuthentication(true);
-      this.FectchUserProjects();
-    },
-    err => {
-      Emitters.authEmitter.emit(false);
-      this.UserService.UpdateAuthentication(false);
-    })
+    // this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
+    //   this.UserService.UpdateCurrentUserInfo(res);
+    //   Emitters.authEmitter.emit(true);
+    //   this.UserService.UpdateAuthentication(true);
+    //   this.FectchUserProjects();
+    // },
+    // err => {
+    //   Emitters.authEmitter.emit(false);
+    //   this.UserService.UpdateAuthentication(false);
+    // })
 
   }
 

@@ -31,7 +31,7 @@ export class EditStudyComponent implements OnInit{
   constructor(private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private UserService: UserService,
+    public UserService: UserService,
     private sanitizer: DomSanitizer){
       this.study_id = this.router.getCurrentNavigation()?.extras.state?.["study_id"];
   }
@@ -49,16 +49,15 @@ export class EditStudyComponent implements OnInit{
 
   ngOnInit(): void {
     
-    this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
-      this.UserService.UpdateCurrentUserInfo(res);
-      Emitters.authEmitter.emit(true);
-      this.UserService.UpdateAuthentication(true);
-      this.FetchStudyData(this.study_id);
-    },
-    err => {
-      Emitters.authEmitter.emit(false);
-      this.UserService.UpdateAuthentication(false);
-    })
+    this.UserService.getCurrentUserService().then((authServiceInstance:UserService) => {
+      console.log(authServiceInstance)
+      if (authServiceInstance) {
+        this.UserService = authServiceInstance;
+        if(this.UserService.IsAuthenticated){
+          this.FetchStudyData(this.study_id);
+        }
+      }
+    });
 
   }
 

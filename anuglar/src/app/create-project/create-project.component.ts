@@ -30,7 +30,7 @@ export class CreateProjectComponent implements OnInit {
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private UserService: UserService,
+    public UserService: UserService,
     private sanitizer: DomSanitizer) {}
 
 

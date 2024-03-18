@@ -195,7 +195,7 @@ class UserStudyData(APIView):
         
 class GPTResponse(APIView):
     def get(self,request):
-        client = OpenAI(api_key = "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")
+        client = OpenAI(api_key = "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")
 
         response = client.chat.completions.create(
         model="gpt-3.5-turbo",

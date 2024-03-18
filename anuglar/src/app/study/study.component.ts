@@ -36,20 +36,16 @@ export class StudyComponent  implements OnInit{
 
   ngOnInit(): void {
 
-    this.http.get("http://localhost:8000/api/user", {withCredentials: true}).subscribe((res:any) => {
-      this.UserService.UpdateCurrentUserInfo(res);
-      Emitters.authEmitter.emit(true);
-      this.UserService.UpdateAuthentication(true);
-      if(this.study_id){
-        this.GetStudy(this.study_id);
-        this.GetPaticipantStudyData(this.study_id);
+    this.UserService.getCurrentUserService().then((authServiceInstance:UserService) => {
+      console.log(authServiceInstance)
+      if (authServiceInstance) {
+        this.UserService = authServiceInstance;
+        if(this.UserService.IsAuthenticated){
+          this.GetStudy(this.study_id);
+          this.GetPaticipantStudyData(this.study_id);
+        }
       }
-    },
-    err => {
-      Emitters.authEmitter.emit(false);
-      this.UserService.UpdateAuthentication(false);
-    })
-      
+    });
   }
 
   GetPaticipantStudyData(studyID:number){

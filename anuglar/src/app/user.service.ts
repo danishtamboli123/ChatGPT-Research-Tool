@@ -27,6 +27,15 @@ export class UserService {
     }
   }
 
+  getCurrentUserService(): Promise<UserService> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this);
+      }, 1000); // Simulate async operation, adjust timeout as needed
+    });
+  }
+  
+
   ResetUser(){
     this.AccountType = "";
     this.IsAuthenticated = false;
