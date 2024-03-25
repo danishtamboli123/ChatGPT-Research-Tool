@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
 
     this.UserService.getCurrentUserService().then((authServiceInstance:UserService) => {
-      console.log(authServiceInstance)
       if (authServiceInstance) {
         this.UserService = authServiceInstance;
         if(this.UserService.IsAuthenticated){

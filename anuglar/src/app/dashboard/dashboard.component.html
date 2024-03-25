@@ -27,7 +27,14 @@
                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
                                     preserveAspectRatio="xMidYMid slice" focusable="false">
                                     <title>Placeholder</title>
-                                    <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%"
+                                    <!-- <image href="https://picsum.photos/283/225?blur=7" height="225" width="100%"/> -->
+                                    <defs>
+                                        <filter id="f1" x="0" y="0" xmlns="http://www.w3.org/2000/svg">
+                                          <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+                                        </filter>
+                                      </defs>
+                                    <rect width="100%" height="100%" fill="#55595c" />
+                                    <text x="50%" y="50%"
                                         fill="#eceeef" dy=".3em" style="text-anchor: middle;">{{study.study_name}}</text>
                                 </svg>
                                 <div class="card-body">

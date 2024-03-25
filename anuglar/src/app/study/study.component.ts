@@ -37,7 +37,6 @@ export class StudyComponent  implements OnInit{
   ngOnInit(): void {
 
     this.UserService.getCurrentUserService().then((authServiceInstance:UserService) => {
-      console.log(authServiceInstance)
       if (authServiceInstance) {
         this.UserService = authServiceInstance;
         if(this.UserService.IsAuthenticated){
@@ -61,10 +60,13 @@ export class StudyComponent  implements OnInit{
   GetStudy(studyID:number){
     this.http.get(`http://localhost:8000/api/editStudy/?q=${studyID}`).subscribe((res:any) => {
       this.studyData = res[0]
+      if(this.studyData.pre_study_questionnaire != "null"){
       this.studyData.pre_study_questionnaire = this.GetSafeURl(this.studyData.pre_study_questionnaire)
+      }
+      if(this.studyData.post_study_questionnaire != "null"){
       this.studyData.post_study_questionnaire = this.GetSafeURl(this.studyData.post_study_questionnaire)
+      }
       this.GetFile(this.studyData.irb_pdf)
-      console.log(res[0])
     },
     err => {
     })
@@ -102,7 +104,6 @@ export class StudyComponent  implements OnInit{
   }
 
   CreateAnswersList(participantData:any, studyData:any){
-    
     var temp:any = {}
     for (var question in studyData.questions_list) { // 'field' is a string
       
