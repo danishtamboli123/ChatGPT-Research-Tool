@@ -24,6 +24,9 @@ export class EditStudyComponent implements OnInit{
   study_id!:number;
   studyData: any;
 
+  pre_url:boolean = false;
+  post_url:boolean = false;
+
   url_checker = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   studyname_checker = '^[0-9a-zA-Z_\\-. ]+$';
 
@@ -141,9 +144,34 @@ export class EditStudyComponent implements OnInit{
   this.http.post("http://localhost:8000/api/editStudy/", this.formData, {withCredentials:true})
   .subscribe(() => {
     this.router.navigate(['/dashboard']);
+    setTimeout(() => {
+      window.alert('Study Edited!');
+      }, 500);
   })
 
  }
+
+ GetSafeURl(url:any){
+  if(url != null || url != undefined || url !=""){
+  return url.startsWith("http://") || url.startsWith("https://") ? this.sanitizer.bypassSecurityTrustResourceUrl(url) : this.sanitizer.bypassSecurityTrustResourceUrl("http://" + url)
+  }
+  else{
+    return "null"
+  }
+  }
+
+  CheckQuestions(){
+    var returnbool = false;
+    if(this.UpdateProjectQuestions.length == 0){
+      returnbool = true;
+    }
+    for (var question in this.UpdateProjectQuestions) { // 'field' is a string
+      if(this.UpdateProjectQuestions[question].length == 0){
+        returnbool = true;
+      }
+    }
+    return returnbool;
+  }
 
   
 

@@ -11,11 +11,17 @@
                 {{UserService.AccountType | titlecase}}.</h1>
             <h1 style="font-size:50px;" class="display-5 fw-bold text-body-emphasis lh-1 mb-3"
                 *ngIf='UserService.CurrentUser == undefined'>Login or Register to get started.</h1>
-            <p style="font-size:20px;margin-top: 50px;" class="display-5 md-body-1">Welcome to our platform designed to
-                be the hub for participants and researchers in ChatGPT studies. Participants engage in conversations
+            <p *ngIf='UserService.CurrentUser == undefined' style="font-size:20px;margin-top: 50px;" class="display-5 md-body-1">Welcome to our platform designed to
+                be the hub for participants and researchers in ChatGPT studies. <br><br> Participants engage in conversations
                 with ChatGPT, providing feedback on conversation quality, while researchers utilize advanced analytics
-                tools to refine ChatGPT's algorithms, and analyse user data. It's where collaboration meets cutting-edge
+                tools to refine ChatGPT's algorithms, and analyse user data. <br><br> It's where collaboration meets cutting-edge
                 research, shaping the future of natural language processing.</p>
+            <p *ngIf="UserService.AccountType=='participant'"  style="font-size:20px;margin-top: 50px;" class="display-5 md-body-1">Welcome to participant’s home page. Please input your <strong>study id</strong> below to get started! <br><br>
+                If you have any questions about the study or have the wrong study id, please contact the principal investigator of your study through relevant channels. <br><br>
+                If you have issues with the interface, please call UF IT for help navigating! They are available <strong>9am - 5pm Monday – Friday</strong>. You can reach them in-person at the Reitz Union, via email or via phone.</p>
+            <p *ngIf="UserService.AccountType=='researcher'"  style="font-size:20px;margin-top: 50px;" class="display-5 md-body-1">Welcome to the researcher’s home page. Please click the <strong>Go to dashboard</strong> to create a study or access your study.<br><br>
+                Please ensure that your participants are given the correct <strong>study id</strong> and are provided with a method to contact you should they encounter any troubles.<br><br>
+                If you have any issues or questions, please contact UF IT for help navigating them. They are available <strong>9am - 5pm Monday – Friday</strong>. You can reach them in-person at the Reitz Union, via email or via phone.</p>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                 <div *ngIf="UserService.AccountType=='participant'">
                     <h3 *ngIf="errorMessage == ''||undefined||null ? false: true" style="color: red;">{{errorMessage}}</h3>

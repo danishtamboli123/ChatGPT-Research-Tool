@@ -25,6 +25,8 @@ export class CreateProjectComponent implements OnInit {
   fileURL?:SafeUrl;
   file?:File;
   formData = new FormData();
+  pre_url:boolean = false;
+  post_url:boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -111,7 +113,33 @@ export class CreateProjectComponent implements OnInit {
   this.http.post("http://localhost:8000/api/createStudy", this.formData, {withCredentials:true})
   .subscribe(() => {
     this.router.navigate(['/dashboard']);
+    setTimeout(() => {
+      window.alert('Study Created!');
+      }, 500);
   })
  }
- 
+
+ GetSafeURl(url:any){
+  if(url != null || url != undefined || url !=""){
+  return url.startsWith("http://") || url.startsWith("https://") ? this.sanitizer.bypassSecurityTrustResourceUrl(url) : this.sanitizer.bypassSecurityTrustResourceUrl("http://" + url)
+  }
+  else{
+    return "null"
+  }
+  }
+
+  CheckQuestions(){
+    var returnbool = false;
+    if(this.CreateProjectQuestions.length == 0){
+      returnbool = true;
+    }
+    for (var question in this.CreateProjectQuestions) { // 'field' is a string
+      if(this.CreateProjectQuestions[question].length == 0){
+        returnbool = true;
+      }
+    }
+    return returnbool;
+  }
+
+
 }

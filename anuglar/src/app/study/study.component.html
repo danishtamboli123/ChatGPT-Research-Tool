@@ -54,7 +54,7 @@
                         <textarea matInput placeholder="Ex. Write me a letter to the editor in..." (keyup)="autoGrowTextZone($event)" [(ngModel)]="$any(question).value.prompt" [disabled]="$any(question).value.answer == '' ? false : true"></textarea>
                     </mat-form-field> 
                     <br>
-                    <button mat-button style="margin-top: 15px;" (click)="ProcessChatGPT(question.value)" [disabled]="$any(question).value.answer == '' ? false:true">Send Message to GPT</button>
+                    <button mat-button style="margin-top: 15px;" (click)="ProcessChatGPT(question.value); actionMethod($event)" [disabled]="$any(question).value.answer == '' ? false:true">Send Message to GPT</button>
                     <div *ngIf="$any(question).value.answer != '' ">
                         <h2 style="color: green;">GPT Response</h2>
                         <p>{{$any(question).value.answer}}</p>
@@ -92,4 +92,5 @@
           </div>
         </mat-step>
       </mat-horizontal-stepper>
+      <button mat-button routerLink="/" style="margin-top: 25px;">Back to Homepage</button>
 </div>

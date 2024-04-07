@@ -4,12 +4,12 @@
     <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
         <mat-step [stepControl]="UpdateProjectForm.controls.study_name">
             <ng-template matStepLabel>Enter Study Name</ng-template>
-            <mat-form-field style="margin-top: 15px;width: 500px !important;">
+            <mat-form-field title="Only english letters, numbers,spaces and _ ? - are allowed, no other characters are allowed." style="margin-top: 15px;width: 500px !important;">
             <mat-label>Study Name</mat-label>
             <input matInput placeholder="Ex. How children interact with ChatGpt" formControlName="study_name" required>
             </mat-form-field>
             <div>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext  type="button">Next</button>
             </div>
         </mat-step>
         <mat-step [stepControl]="UpdateProjectForm.controls.irb_pdf">
@@ -19,7 +19,7 @@
              
                 {{fileName || "No file uploaded yet."}}
              
-                 <button mat-mini-fab color="primary"
+                 <button mat-mini-fab color="primary"  type="button"
                    (click)="fileUpload.click()" style="margin-left: 15px;">
                      <mat-icon>attach_file</mat-icon>
                  </button>
@@ -34,7 +34,7 @@
             </div>
             <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext  type="button">Next</button>
             </div>
         </mat-step>
         <mat-step [stepControl]="UpdateProjectForm.controls.pre_study_questionnaire">
@@ -43,33 +43,37 @@
             <mat-label>Qualtrics Questionnaire Embed Link</mat-label>
             <input matInput formControlName="pre_study_questionnaire" placeholder="Ex. http://https://achasurveying.co1.qualtrics.com/jfe/form/SV_1SIY">
             </mat-form-field>
+            <button mat-fab color="primary" type="button" aria-label="Example icon button with a delete icon" (click)="pre_url=!pre_url" style="margin-left: 15px;" [disabled]="UpdateProjectForm.controls.pre_study_questionnaire.getRawValue()=='' || UpdateProjectForm.controls.pre_study_questionnaire.getRawValue() == null ">
+                <mat-icon>{{ pre_url ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </button>
             <div>
+            <iframe *ngIf="pre_url" [src]="GetSafeURl(UpdateProjectForm.controls.pre_study_questionnaire.getRawValue())" height="400px" width="500px"></iframe><br>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext  type="button">Next</button>
             </div>
         </mat-step>
         <mat-step [stepControl]="UpdateProjectForm.controls.questions_list">
-            <ng-template matStepLabel>Participant questions for the study</ng-template>
+            <ng-template matStepLabel>ChatGPT Question Prompts</ng-template>
             <h2 style="margin-top: 15px;margin-bottom: 0px;">Add Questions</h2>
             <div *ngIf="UpdateProjectForm.controls.questions_list.value!=[]">
                 <div *ngFor="let question of UpdateProjectQuestions; index as i;trackBy: trackByMethod" style="margin-top: 15px;">
                     <h2>Question {{i+1}}:</h2>
                     <mat-form-field style="width: 500px !important;">
                         <mat-label>Question {{i+1}}</mat-label>
-                        <input matInput placeholder="Ex. How children interact with ChatGpt?" [(ngModel)]='UpdateProjectQuestions[i]' [ngModelOptions]="{standalone: true}" required>
+                        <input matInput placeholder="Ex. Asks ChatGPT to give 5 ideas on Science Fair projects." [(ngModel)]='UpdateProjectQuestions[i]' [ngModelOptions]="{standalone: true}" required>
                     </mat-form-field>
-                    <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="RemoveQuestion(i)" style="margin-left: 15px;">
+                    <button mat-fab color="primary"  type="button" aria-label="Example icon button with a delete icon" (click)="RemoveQuestion(i)" style="margin-left: 15px;">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
             </div>
             <br>
-            <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="AddQuestion()">
+            <button mat-fab color="primary" type="button" aria-label="Example icon button with a delete icon" (click)="AddQuestion()">
                 <mat-icon>add</mat-icon>
             </button>
             <div style="margin-top: 15px;">
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext  type="button" [disabled]="CheckQuestions()">Next</button>
             </div>
         </mat-step>
         <mat-step [stepControl]="UpdateProjectForm.controls.post_study_questionnaire">
@@ -78,18 +82,22 @@
             <mat-label>Qualtrics Questionnaire Embed Link</mat-label>
             <input matInput formControlName="post_study_questionnaire" placeholder="Ex. http://https://achasurveying.co1.qualtrics.com/jfe/form/SV_1SIY">
             </mat-form-field>
+            <button mat-fab color="primary"  type="button" aria-label="Preview Post Study Questionnaire" (click)="post_url=!post_url" style="margin-left: 15px;" [disabled]="UpdateProjectForm.controls.post_study_questionnaire.getRawValue()=='' || UpdateProjectForm.controls.post_study_questionnaire.getRawValue() == null ">
+                <mat-icon>{{ post_url ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </button>
             <div>
+            <iframe *ngIf="post_url" [src]="GetSafeURl(UpdateProjectForm.controls.post_study_questionnaire.getRawValue())" height="400px" width="500px"></iframe><br>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button mat-button matStepperNext  type="button">Next</button>
             </div>
         </mat-step>
         <mat-step>
         <ng-template matStepLabel>Done</ng-template>
         <p>You are now done.</p>
         <div>
-            <button mat-button matStepperPrevious style="margin-right: 15px;">Back</button>
-            <button mat-button (click)="stepper.reset();ResetFormData();" style="margin-right: 15px;">Reset</button>
-            <button class="btn btn-primary" style="margin-right: 15px;" (click)="UpdateStudy();">Update Study</button>
+            <button mat-button type="button" matStepperPrevious style="margin-right: 15px;">Back</button>
+            <button mat-button type="button" (click)="stepper.reset();ResetFormData();" style="margin-right: 15px;">Reset</button>
+            <button class="btn btn-primary" type="button" style="margin-right: 15px;" (click)="UpdateStudy();">Update Study</button>
         </div>
         </mat-step>
     </mat-stepper>

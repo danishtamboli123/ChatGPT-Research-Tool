@@ -96,6 +96,9 @@ export class StudyComponent  implements OnInit{
       console.log(this.participantStudyData);
       console.log(res);
       this.router.navigate(['']);
+      setTimeout(() => {
+        window.alert('Study Completed!');
+        }, 500);
     })
   }
 
@@ -138,4 +141,7 @@ export class StudyComponent  implements OnInit{
     })
   }
 
+  actionMethod(event: any) {
+    event.currentTarget.disabled = true;
+}
 }
