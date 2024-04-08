@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { state } from '@angular/animations';
 import { DeleteStudyDialogComponent } from '../delete-study-dialog/delete-study-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 
 @Component({

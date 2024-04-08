@@ -72,8 +72,8 @@
                                             <button type="button" class="btn btn-sm btn-outline-secondary" (click)= "EditStudy(study.study_id)">Edit</button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openDeleteDialog(study)">Delete</button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary" (click)="DownloadExcelFile(study.study_id)">Download Responses</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" [cdkCopyToClipboard]="study.study_id">Study ID: {{study.study_id}}</button>
                                         </div>
-                                        <small class="text-body-secondary">Study ID: {{study.study_id}}</small>
                                     </div>
                                 </div>
                             </div>
